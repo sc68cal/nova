@@ -434,6 +434,9 @@ class LibvirtGenericVIFDriver(LibvirtBaseVIFDriver):
             linux_net.create_ovs_vif_port(self.get_bridge_name(vif),
                                           v2_name, iface_id, vif['address'],
                                           instance['uuid'])
+        if CONF.use_ipv6:
+            utils.execute('brctl', br_name, v1_name,
+                          'hairpin', 'off', run_as_root=True)
 
     def plug_ovs(self, instance, vif):
         if self.get_firewall_required():
